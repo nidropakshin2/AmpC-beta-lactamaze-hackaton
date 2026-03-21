@@ -33,7 +33,6 @@ Target: E. coli AmpC β-lactamase  - a Class C β-lactamase conferring antibioti
 
 ## Methods
 
-
 The following tools are used in this project: 
 
 ### Core Frameworks & Libraries
@@ -49,7 +48,7 @@ The following tools are used in this project:
 ### Machine Learning Ecosystem
 - **Scikit-learn** (v1.2+) for ML models:
 - Gradient Boosting
-- **XGBoost** for QSAR modeling
+  - **XGBoost** for QSAR modeling
 
 ### Reinforcement Learning
 
