@@ -1,0 +1,121 @@
+11:55:45 <INFO> Started REINVENT 4.7.15 (C) AstraZeneca 2017, 2023 on 2026-03-21
+11:55:45 <INFO> Command line: C:\Users\Mikhail\miniconda3\envs\sber_hack_test\Scripts\reinvent -l reinvent/stage1.log reinvent/stage1.toml
+11:55:45 <INFO> Reading run configuration from C:\Users\Mikhail\VSCodeProjects\sber_hackaton\AmpC-beta-lactamaze-hackaton\reinvent\stage1.toml using format toml
+11:55:45 <INFO> User Михаил on host DESKTOP-VAIB0PR
+11:55:45 <INFO> Python version 3.12.13
+11:55:45 <INFO> PyTorch version 2.9.0+cpu, git 0fabc3ba44823f257e70ce397d989c8de5e362c1
+11:55:45 <INFO> PyTorch compiled with CUDA version None
+11:55:45 <INFO> RDKit version 2024.03.1
+11:55:45 <INFO> Platform Windows-10-10.0.19045-SP0
+11:55:45 <INFO> Number of PyTorch CUDA devices 0
+11:55:45 <WARN> 'use_cuda' is deprecated, use 'device' instead
+11:55:45 <INFO> Using CPU AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD
+11:55:45 <INFO> Writing TensorBoard summary to C:\Users\Mikhail\VSCodeProjects\sber_hackaton\AmpC-beta-lactamaze-hackaton\reinvent\tb_stage1
+11:55:45 <INFO> Writing JSON config file to C:\Users\Mikhail\VSCodeProjects\sber_hackaton\AmpC-beta-lactamaze-hackaton\reinvent\stage1.json
+11:55:45 <INFO> Starting 1 stage of Reinforcement Learning
+11:55:45 <INFO> C:\Users\Mikhail\miniconda3\envs\sber_hack\Lib\site-packages\priors\reinvent.prior has valid hash:
+{ 'comments': [],
+  'creation_date': 0,
+  'date_format': 'UNIX epoch',
+  'hash_id': '173568c36e1fc3d95cab289c7d31ce0b',
+  'hash_id_format': 'xxhash.xxh3_128_hex 3.4.1',
+  'model_id': '55d68f8a81c04f5a86304ebe1723a0ea',
+  'model_id_format': 'uuid.uuid4 3.10.12',
+  'origina_data_source': 'ChEMBL 25',
+  'updates': []}
+11:55:45 <INFO> Number of network parameters: 5,805,602
+11:55:45 <INFO> Network architecture:
+RNN(
+  (_embedding): Embedding(34, 256)
+  (_rnn): LSTM(256, 512, num_layers=3, batch_first=True)
+  (_linear): Linear(in_features=512, out_features=34, bias=True)
+)
+11:55:45 <INFO> C:\Users\Mikhail\miniconda3\envs\sber_hack\Lib\site-packages\priors\reinvent.prior has valid hash:
+{ 'comments': [],
+  'creation_date': 0,
+  'date_format': 'UNIX epoch',
+  'hash_id': '173568c36e1fc3d95cab289c7d31ce0b',
+  'hash_id_format': 'xxhash.xxh3_128_hex 3.4.1',
+  'model_id': '55d68f8a81c04f5a86304ebe1723a0ea',
+  'model_id_format': 'uuid.uuid4 3.10.12',
+  'origina_data_source': 'ChEMBL 25',
+  'updates': []}
+11:55:45 <INFO> Number of network parameters: 5,805,602
+11:55:45 <INFO> Network architecture:
+RNN(
+  (_embedding): Embedding(34, 256)
+  (_rnn): LSTM(256, 512, num_layers=3, batch_first=True)
+  (_linear): Linear(in_features=512, out_features=34, bias=True)
+)
+11:55:45 <INFO> Using generator Reinvent
+11:55:45 <INFO> Prior read from c:\Users\Mikhail\miniconda3\envs\sber_hack\Lib\site-packages\reinvent\..\priors\reinvent.prior
+11:55:45 <INFO> Agent read from c:\Users\Mikhail\miniconda3\envs\sber_hack\Lib\site-packages\reinvent\..\priors\reinvent.prior
+11:55:45 <INFO> Using reward strategy dap
+11:55:45 <INFO> Purging diversity filter memories after each stage
+11:55:45 <WARN> Inception disabled but may speed up convergence
+11:55:45 <INFO> Registered scoring component ROCSSimilarity
+11:55:45 <INFO> Registered scoring component GroupCount
+11:55:45 <INFO> Registered scoring component FragmentQed
+11:55:45 <INFO> Registered scoring component FragmentSlogP
+11:55:45 <INFO> Registered scoring component FragmentMolecularWeight
+11:55:45 <INFO> Registered scoring component FragmentTPSA
+11:55:45 <INFO> Registered scoring component FragmentDistanceMatrix
+11:55:45 <INFO> Registered scoring component FragmentNumAtomStereoCenters
+11:55:45 <INFO> Registered scoring component FragmentHBondAcceptors
+11:55:45 <INFO> Registered scoring component FragmentHBondDonors
+11:55:45 <INFO> Registered scoring component FragmentNumRotBond
+11:55:45 <INFO> Registered scoring component FragmentCsp3
+11:55:45 <INFO> Registered scoring component Fragmentnumsp
+11:55:45 <INFO> Registered scoring component Fragmentnumsp2
+11:55:45 <INFO> Registered scoring component Fragmentnumsp3
+11:55:45 <INFO> Registered scoring component FragmentEffectiveLength
+11:55:45 <INFO> Registered scoring component FragmentGraphLength
+11:55:45 <INFO> Registered scoring component FragmentLengthRatio
+11:55:45 <INFO> Registered scoring component FragmentNumHeavyAtoms
+11:55:45 <INFO> Registered scoring component FragmentNumHeteroAtoms
+11:55:45 <INFO> Registered scoring component FragmentNumRings
+11:55:45 <INFO> Registered scoring component FragmentNumAromaticRings
+11:55:45 <INFO> Registered scoring component FragmentNumAliphaticRings
+11:55:45 <INFO> Registered scoring component FragmentSlogP
+11:55:45 <INFO> Registered scoring component MatchingSubstructure
+11:55:45 <INFO> Registered scoring component MolVolume
+11:55:45 <INFO> Registered scoring component Qed
+11:55:45 <INFO> Registered scoring component LargestRingSize
+11:55:45 <INFO> Registered scoring component MolecularWeight
+11:55:45 <INFO> Registered scoring component GraphLength
+11:55:45 <INFO> Registered scoring component NumAtomStereoCenters
+11:55:45 <INFO> Registered scoring component HBondAcceptors
+11:55:45 <INFO> Registered scoring component HBondDonors
+11:55:45 <INFO> Registered scoring component NumRotBond
+11:55:45 <INFO> Registered scoring component Csp3
+11:55:45 <INFO> Registered scoring component numsp
+11:55:45 <INFO> Registered scoring component numsp2
+11:55:45 <INFO> Registered scoring component numsp3
+11:55:45 <INFO> Registered scoring component NumHeavyAtoms
+11:55:45 <INFO> Registered scoring component NumHeteroAtoms
+11:55:45 <INFO> Registered scoring component NumRings
+11:55:45 <INFO> Registered scoring component NumAromaticRings
+11:55:45 <INFO> Registered scoring component NumAliphaticRings
+11:55:45 <INFO> Registered scoring component SlogP
+11:55:45 <INFO> Registered scoring component LargestRingSize
+11:55:45 <INFO> Registered scoring component PMI
+11:55:45 <INFO> Registered scoring component RDKitDescriptors
+11:55:45 <INFO> Registered scoring component TanimotoSimilarity
+11:55:45 <INFO> Registered scoring component TanimotoDistance
+11:55:45 <INFO> Registered scoring component TPSA
+11:55:45 <INFO> Registered scoring component SAScore
+11:55:48 <INFO> Registered scoring component ChemProp
+11:55:48 <INFO> Registered scoring component CustomAlerts
+11:55:48 <INFO> Registered scoring component DockStream
+11:55:48 <INFO> Registered scoring component ExternalProcess
+11:55:48 <INFO> Registered scoring component REST
+11:55:48 <INFO> Registered scoring component Icolos
+11:55:48 <INFO> Registered scoring component MMP
+11:55:48 <INFO> Registered scoring component Qptuna
+11:55:48 <INFO> Registered scoring component ReactionFilter
+11:55:48 <INFO> Registered scoring component RingPrecedence
+11:55:48 <INFO> Registered scoring component Maize
+11:55:48 <INFO> Registered scoring component SynthSense
+11:55:48 <INFO> Registered scoring component CAZP
+11:55:48 <INFO> Creating filter component custom_alerts
+11:55:48 <INFO> Creating scoring component QED

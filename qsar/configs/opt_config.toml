@@ -1,0 +1,114 @@
+name = ""
+description = ""
+mode = [ "r", "e", "g", "r", "e", "s", "s", "i", "o", "n",]
+task = "optimization"
+[[algorithms]]
+name = "SVR"
+
+[algorithms.parameters.C]
+low = 1e-6
+high = 1000000.0
+[algorithms.parameters.gamma]
+low = 0.0001
+high = 100.0
+[[algorithms]]
+name = "RandomForestRegressor"
+
+[algorithms.parameters]
+max_features = [ [ "a", "u", "t", "o",],]
+[algorithms.parameters.max_depth]
+low = 2
+high = 32
+[algorithms.parameters.n_estimators]
+low = 5
+high = 10
+[[algorithms]]
+name = "Ridge"
+
+[algorithms.parameters.alpha]
+low = 0.01
+high = 100
+[[algorithms]]
+name = "PLSRegression"
+
+[algorithms.parameters.n_components]
+low = 2
+high = 5
+[[algorithms]]
+name = "KNeighborsRegressor"
+
+[algorithms.parameters]
+weights = [ [ "u", "n", "i", "f", "o", "r", "m",],]
+metric = [ [ "m", "i", "n", "k", "o", "w", "s", "k", "i",],]
+[algorithms.parameters.n_neighbors]
+low = 1
+high = 10
+[[descriptors]]
+name = "ECFP"
+
+[descriptors.parameters]
+radius = 3
+nBits = 2048
+returnRdkit = false
+[[descriptors]]
+name = "ECFP_counts"
+
+[descriptors.parameters]
+radius = 3
+useFeatures = true
+nBits = 2048
+[[descriptors]]
+name = "MACCS_keys"
+
+[descriptors.parameters]
+feature_names = [ "", "?", "[#104]", "[#32,#33,#34,#50,#51,#52,#82,#83,#84]", "[Ac,Th,Pa,U,Np,Pu,Am,Cm,Bk,Cf,Es,Fm,Md,No,Lr]", "[Sc,Ti,Y,Zr,Hf]", "[La,Ce,Pr,Nd,Pm,Sm,Eu,Gd,Tb,Dy,Ho,Er,Tm,Yb,Lu]", "[V,Cr,Mn,Nb,Mo,Tc,Ta,W,Re]", "[!#6;!#1]1~*~*~*~1", "[Fe,Co,Ni,Ru,Rh,Pd,Os,Ir,Pt]", "[Be,Mg,Ca,Sr,Ba,Ra]", "*1~*~*~*~1", "[Cu,Zn,Ag,Cd,Au,Hg]", "[#8]~[#7](~[#6])~[#6]", "[#16]-[#16]", "[#8]~[#6](~[#8])~[#8]", "[!#6;!#1]1~*~*~1", "[#6]#[#6]", "[#5,#13,#31,#49,#81]", "*1~*~*~*~*~*~*~1", "[#14]", "[#6]=[#6](~[!#6;!#1])~[!#6;!#1]", "*1~*~*~1", "[#7]~[#6](~[#8])~[#8]", "[#7]-[#8]", "[#7]~[#6](~[#7])~[#7]", "[#6]=;@[#6](@*)@*", "[I]", "[!#6;!#1]~[CH2]~[!#6;!#1]", "[#15]", "[#6]~[!#6;!#1](~[#6])(~[#6])~*", "[!#6;!#1]~[F,Cl,Br,I]", "[#6]~[#16]~[#7]", "[#7]~[#16]", "[CH2]=*", "[Li,Na,K,Rb,Cs,Fr]", "[#16R]", "[#7]~[#6](~[#8])~[#7]", "[#7]~[#6](~[#6])~[#7]", "[#8]~[#16](~[#8])~[#8]", "[#16]-[#8]", "[#6]#[#7]", "F", "[!#6;!#1;!H0]~*~[!#6;!#1;!H0]", "[!#1;!#6;!#7;!#8;!#9;!#14;!#15;!#16;!#17;!#35;!#53]", "[#6]=[#6]~[#7]", "Br", "[#16]~*~[#7]", "[#8]~[!#6;!#1](~[#8])(~[#8])", "[!+0]", "[#6]=[#6](~[#6])~[#6]", "[#6]~[#16]~[#8]", "[#7]~[#7]", "[!#6;!#1;!H0]~*~*~*~[!#6;!#1;!H0]", "[!#6;!#1;!H0]~*~*~[!#6;!#1;!H0]", "[#8]~[#16]~[#8]", "[#8]~[#7](~[#8])~[#6]", "[#8R]", "[!#6;!#1]~[#16]~[!#6;!#1]", "[#16]!:*:*", "[#16]=[#8]", "*~[#16](~*)~*", "*@*!@*@*", "[#7]=[#8]", "*@*!@[#16]", "c:n", "[#6]~[#6](~[#6])(~[#6])~*", "[!#6;!#1]~[#16]", "[!#6;!#1;!H0]~[!#6;!#1;!H0]", "[!#6;!#1]~[!#6;!#1;!H0]", "[!#6;!#1]~[#7]~[!#6;!#1]", "[#7]~[#8]", "[#8]~*~*~[#8]", "[#16]=*", "[CH3]~*~[CH3]", "*!@[#7]@*", "[#6]=[#6](~*)~*", "[#7]~*~[#7]", "[#6]=[#7]", "[#7]~*~*~[#7]", "[#7]~*~*~*~[#7]", "[#16]~*(~*)~*", "*~[CH2]~[!#6;!#1;!H0]", "[!#6;!#1]1~*~*~*~*~1", "[NH2]", "[#6]~[#7](~[#6])~[#6]", "[C;H2,H3][!#6;!#1][C;H2,H3]", "[F,Cl,Br,I]!@*@*", "[#16]", "[#8]~*~*~*~[#8]", "[$([!#6;!#1;!H0]~*~*~[CH2]~*),$([!#6;!#1;!H0;R]1@[R]@[R]@[CH2;R]1),$([!#6;!#1;!H0]~[R]1@[R]@[CH2;R]1)]", "[$([!#6;!#1;!H0]~*~*~*~[CH2]~*),$([!#6;!#1;!H0;R]1@[R]@[R]@[R]@[CH2;R]1),$([!#6;!#1;!H0]~[R]1@[R]@[R]@[CH2;R]1),$([!#6;!#1;!H0]~*~[R]1@[R]@[CH2;R]1)]", "[#8]~[#6](~[#7])~[#6]", "[!#6;!#1]~[CH3]", "[!#6;!#1]~[#7]", "[#7]~*~*~[#8]", "*1~*~*~*~*~1", "[#7]~*~*~*~[#8]", "[!#6;!#1]1~*~*~*~*~*~1", "[#6]=[#6]", "*~[CH2]~[#7]", "[$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]1),$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]1),$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]1),$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]1),$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]1),$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]1),$([R]@1@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]@[R]1)]", "[!#6;!#1]~[#8]", "Cl", "[!#6;!#1;!H0]~*~[CH2]~*", "*@*(@*)@*", "[!#6;!#1]~*(~[!#6;!#1])~[!#6;!#1]", "[F,Cl,Br,I]~*(~*)~*", "[CH3]~*~*~*~[CH2]~*", "*~[CH2]~[#8]", "[#7]~[#6]~[#8]", "[#7]~*~[CH2]~*", "*~*(~*)(~*)~*", "[#8]!:*:*", "[CH3]~[CH2]~*", "[CH3]~*~[CH2]~*", "[$([CH3]~*~*~[CH2]~*),$([CH3]~*1~*~[CH2]1)]", "[#7]~*~[#8]", "[$(*~[CH2]~[CH2]~*),$(*1~[CH2]~[CH2]1)]", "[#7]=*", "[!#6;R]", "[#7;R]", "*~[#7](~*)~*", "[#8]~[#6]~[#8]", "[!#6;!#1]~[!#6;!#1]", "?", "*!@[#8]!@*", "*@*!@[#8]", "[$(*~[CH2]~*~*~*~[CH2]~*),$([R]1@[CH2;R]@[R]@[R]@[R]@[CH2;R]1),$(*~[CH2]~[R]1@[R]@[R]@[CH2;R]1),$(*~[CH2]~*~[R]1@[R]@[CH2;R]1)]", "[$(*~[CH2]~*~*~[CH2]~*),$([R]1@[CH2]@[R]@[R]@[CH2;R]1),$(*~[CH2]~[R]1@[R]@[CH2;R]1)]", "[!#6;!#1]~[!#6;!#1]", "[!#6;!#1;!H0]", "[#8]~*~[CH2]~*", "*@*!@[#7]", "[F,Cl,Br,I]", "[#7]!:*:*", "[#8]=*", "[!C;!c;R]", "[!#6;!#1]~[CH2]~*", "[O;!H0]", "[#8]", "[CH3]", "[#7]", "*@*!@[#8]", "*!:*:*!:*", "*1~*~*~*~*~*~1", "[#8]", "[$(*~[CH2]~[CH2]~*),$([R]1@[CH2;R]@[CH2;R]1)]", "*~[!#6;!#1](~*)~*", "[C;H3,H4]", "*!@*@*!@*", "[#7;!H0]", "[#8]~[#6](~[#6])~[#6]", "[!#6;!#1]~[CH2]~*", "[#6]=[#8]", "*!@[CH2]!@*", "[#7]~*(~*)~*", "[#6]-[#8]", "[#6]-[#7]", "[#8]", "[C;H3,H4]", "[#7]", "a", "*1~*~*~*~*~*~1", "[#8]", "[R]", "?",]
+[[descriptors]]
+name = "PathFP"
+
+[descriptors.parameters]
+maxPath = 3
+fpSize = 2048
+
+[data]
+training_dataset_file = "qsar/dataset/AID_585_test_str.csv"
+input_column = "smiles"
+response_column = "activity"
+response_type = "regression"
+save_intermediate_files = false
+log_transform = false
+probabilistic_threshold_representation = false
+assess_modelability = false
+
+[settings]
+mode = [ "r", "e", "g", "r", "e", "s", "s", "i", "o", "n",]
+shuffle = false
+direction = [ "m", "a", "x", "i", "m", "i", "z", "e",]
+scoring = "neg_mean_squared_error"
+minimise_std_dev = false
+use_cache = true
+n_trials = 100
+n_splits = 3
+n_replicates = 5
+n_jobs = -1
+n_startup_trials = 50
+random_seed = 44
+track_to_mlflow = false
+split_chemprop = true
+n_chemprop_trials = 1
+
+[data.deduplication_strategy]
+name = "KeepAllNoDeduplication"
+
+[data.split_strategy]
+name = "Stratified"
+fraction = 0.2
+seed = 1
+leave_out = 0.0
+bins = "fd_merge"
+
+[settings.optimization_split_strategy]
+name = "Stratified"
+fraction = 0.2
+seed = 1
+leave_out = 0.0
+bins = "fd_merge"
