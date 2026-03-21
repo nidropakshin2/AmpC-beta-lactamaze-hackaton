@@ -1,6 +1,7 @@
 import apischema
 import time
 import toml
+import pandas as pd
 # Start with the imports.
 import sklearn
 from optunaz.three_step_opt_build_merge import (
@@ -16,13 +17,13 @@ from optunaz.config.optconfig import (
     SVR,
     RandomForestRegressor,
     Ridge,
-    Lasso,
+    XGBRegressor,
     PLSRegression,
     KNeighborsRegressor
 )
 from optunaz.datareader import Dataset
 from optunaz.utils.preprocessing.deduplicator import KeepAllNoDeduplication
-from optunaz.utils.preprocessing.splitter import Stratified
+from optunaz.utils.preprocessing.splitter import Stratified, NoSplitting
 from optunaz.descriptors import ECFP, MACCS_keys, ECFP_counts, PathFP
 
 
@@ -65,10 +66,10 @@ def main():
         data=Dataset(
             input_column="smiles",  # Typical names are "SMILES" and "smiles".
             response_column="activity",  # Often a specific name (like here), or just "activity".
-            training_dataset_file="qsar/dataset/AID_585_test_str.csv",  # The file with training data.
-            # test_dataset_file="qsar/dataset/AID_585_test_str.csv",  # Hidden during optimization.
+            training_dataset_file="qsar/dataset/data_rdkit_train_str.csv",  # The file with training data.
+            test_dataset_file="qsar/dataset/data_rdkit_test_str.csv",  # Hidden during optimization.
             deduplication_strategy=KeepAllNoDeduplication(),
-            split_strategy=Stratified(),
+            split_strategy=NoSplitting(),
         ),
         descriptors=[
             ECFP.new(),
@@ -77,19 +78,15 @@ def main():
             PathFP.new()
         ],
         algorithms=[
-            SVR.new(),
-            RandomForestRegressor.new(n_estimators={"low": 5, "high": 10}),
-            Ridge.new(),
-            # Lasso.new(),
-            PLSRegression.new(),
-            KNeighborsRegressor.new()
+            XGBRegressor.new(n_estimators={"low": 3, "high": 6}),
         ],
         settings=OptimizationConfig.Settings(
             mode=ModelMode.REGRESSION,
+            use_cache=True,
             n_splits=3,
             n_trials=100,  # Total number of trials.
             n_startup_trials=50,  # Number of startup ("random") trials.
-            random_seed=44, # Seed for reproducability
+            random_seed=42, # Seed for reproducability
             direction=OptimizationDirection.MAXIMIZATION,
         ),
     ) 
@@ -104,12 +101,12 @@ def main():
     buildconfig = buildconfig_best(study)
 
     buildconfig_as_dict = apischema.serialize(buildconfig)
-    print(buildconfig_as_dict)
 
     datetime = time.strftime("%Y-%m-%d_%H_%M_%S")
     toml.dump(buildconfig_as_dict, open(f"qsar/configs/best_config_{datetime}.toml", "w"))
+    toml.dump(buildconfig_as_dict, open(f"qsar/configs/best_config_latest.toml", "w"))
     
-    best_build = build_best(buildconfig, f"qsar/model/model_{datetime}.pkl")
-    best_build = build_best(buildconfig, f"qsar/model/latest.pkl")
 
+    build_best(buildconfig, f"qsar/model/model_{datetime}.pkl")
+    build_best(buildconfig, f"qsar/model/latest.pkl")
 main()
