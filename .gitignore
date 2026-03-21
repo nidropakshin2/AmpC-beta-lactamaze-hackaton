@@ -4,6 +4,12 @@
 
 *REINVENT4
 *QSARtuna
+*reinvent/logs
+*qsar/dataset
+*qsar/model/*.pkl
+reinvent/*.chkpt
+reinvent/*.csv
+*qsar/configs
 
 # ── PYTHON ──────────────────────────────────────────────────
 # Byte-compiled / optimized / DLL files
