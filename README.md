@@ -31,13 +31,38 @@ Target: E. coli AmpC β-lactamase  - a Class C β-lactamase conferring antibioti
 
 ## Pipeline
 
-## Dependencies
+## Methods
 
-General pipeline depends on:
-- python >= 3.10
-- rdkit >= 2023.03.1
-- xgboost >= 
-- reinvent >= 4.0
+
+The following tools are used in this project: 
+
+### Core Frameworks & Libraries
+- **Python 3.10+** as the primary programming language
+- **REINVENT 4** — a framework for de novo molecule generation with Reinforcement Learning 
+
+### Feature Engineering
+
+- **RDKit (2023.09+)** — generation:
+- Morgan Fingerprints
+- Physicochemical descriptors
+
+### Machine Learning Ecosystem
+- **Scikit-learn** (v1.2+) for ML models:
+- Gradient Boosting
+- **XGBoost** for QSAR modeling
+
+### Reinforcement Learning
+
+- **REINVENT 4** — the main RL framework
+
+### Visualization Tools
+
+- **RDKit** — visualization of molecules (2D structures)
+- **PyMOL** — 3D visualization docking
+
+### Development Environment
+- **VS Code** with Python extensions
+- **Git** for version control
 
 
 ## Authors
