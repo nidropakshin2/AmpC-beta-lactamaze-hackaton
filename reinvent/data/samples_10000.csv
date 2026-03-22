@@ -1,4 +1,4 @@
-SMILES,SMILES_state,NLL
+smiles,SMILES_state,NLL
 O=C(c1cccs1)N1CCCN(c2cnccn2)CC1,1,12.5
 CCCCCc1nc2c(=N)[nH]c(=N)cnc2n1CC,1,25.1
 O=C(c1ccoc1)N1CCCN(C(=O)c2ccccn2)CC1,1,13.75

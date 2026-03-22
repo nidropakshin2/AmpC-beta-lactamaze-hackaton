@@ -209,13 +209,13 @@ def analyze(train_smiles, rl_smiles):
     print("KL divergence:", kl_scores, file=open("metrics/results.txt", "a"))
 
     print("\nPlotting embeddings...")
-    # embed_and_plot(fps_train, fps_rl, method="umap")
-    # embed_and_plot(fps_train, fps_rl, method="tsne")
-    # embed_and_plot(fps_train, fps_rl, method="pca")
+    embed_and_plot(fps_train, fps_rl, method="umap")
+    embed_and_plot(fps_train, fps_rl, method="tsne")
+    embed_and_plot(fps_train, fps_rl, method="pca")
     
 
-    # print("Plotting property distributions...")
-    # plot_property_distributions(desc_train, desc_rl)
+    print("Plotting property distributions...")
+    plot_property_distributions(desc_train, desc_rl)
 
 
 # ======================
@@ -227,6 +227,6 @@ if __name__ == "__main__":
     # train_smiles = ["CCO", "CCN", "CCC"]
     # rl_smiles = ["CCO", "CCCC", "CCCl"]
 
-    train_smiles = pd.read_csv("qsar/dataset/data_rdkit_train.csv")["smiles"].to_list()
-    rl_smiles = pd.read_csv("reinvent/data/samples_10000.csv")["SMILES"].to_list()
+    train_smiles = pd.read_csv("qsar/dataset/data_rdkit_train.csv")["smiles"].to_list()[:5000]
+    rl_smiles = pd.read_csv("reinvent/data/samples_10000.csv")["SMILES"].to_list()[:5000]
     analyze(train_smiles, rl_smiles)
