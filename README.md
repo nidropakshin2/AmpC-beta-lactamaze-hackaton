@@ -20,16 +20,14 @@ Target: E. coli AmpC β-lactamase  - a Class C β-lactamase conferring antibioti
 
 ## Contents
 - [Pipeline](#Pipeline)
-- [Dataset](#Dataset)
 - [Methods](#Methods)
 - [System requirements](#System-requirements)
 - [Dependencies](#Dependencies)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Results](#Results)
 - [Authors](#Authors)
 
 ## Pipeline
+
+![img](https://github.com/nidropakshin2/AmpC-beta-lactamaze-hackaton/blob/main/imgs/pipeline.png)
 
 ## Methods
 
