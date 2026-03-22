@@ -3,9 +3,15 @@ import numpy as np
 from rdkit import Chem
 from rdkit.Chem import Descriptors, QED
 from rdkit.Chem import rdMolDescriptors
+
+# SA score (RDKit contrib)
+from rdkit.Contrib.SA_Score import sascorer
+from rdkit.Chem import rdMolDescriptors
 from rdkit.Chem import Crippen
 import matplotlib.pyplot as plt
 from scipy.stats import entropy
+
+
 
 # ======================
 # Utils
@@ -33,7 +39,8 @@ def compute_properties(df):
                 'HBA': Descriptors.NumHAcceptors(mol),
                 'TPSA': rdMolDescriptors.CalcTPSA(mol),
                 'QED': QED.qed(mol),
-                'NumRotBonds': Descriptors.NumRotatableBonds(mol)
+                'NumRotBonds': Descriptors.NumRotatableBonds(mol),
+                'SA': sascorer.calculateScore(mol) if sascorer else None
             })
         except:
             continue
