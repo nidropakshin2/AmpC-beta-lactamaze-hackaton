@@ -20,16 +20,14 @@ Target: E. coli AmpC β-lactamase  - a Class C β-lactamase conferring antibioti
 
 ## Contents
 - [Pipeline](#Pipeline)
-- [Dataset](#Dataset)
 - [Methods](#Methods)
 - [System requirements](#System-requirements)
 - [Dependencies](#Dependencies)
-- [Installation](#Installation)
-- [Usage](#Usage)
-- [Results](#Results)
 - [Authors](#Authors)
 
 ## Pipeline
+
+![img](https://github.com/nidropakshin2/AmpC-beta-lactamaze-hackaton/blob/main/imgs/pipeline.png)
 
 ## Methods
 
@@ -54,10 +52,14 @@ The following tools are used in this project:
 
 - **REINVENT 4** — the main RL framework
 
+### Molecular docking
+
+- **smina** — AutoDock Vina fork for faster computations
+
 ### Visualization Tools
 
 - **RDKit** — visualization of molecules (2D structures)
-- **PyMOL** — 3D visualization docking
+- **PyMOL** — 3D structure visualization
 
 ### Development Environment
 - **VS Code** with Python extensions
