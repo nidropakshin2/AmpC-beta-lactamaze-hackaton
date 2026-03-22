@@ -3,6 +3,27 @@ description = ""
 mode = [ "r", "e", "g", "r", "e", "s", "s", "i", "o", "n",]
 task = "optimization"
 [[algorithms]]
+name = "XGBRegressor"
+
+[algorithms.parameters.max_depth]
+low = 2
+high = 12
+[algorithms.parameters.n_estimators]
+low = 3
+high = 6
+[algorithms.parameters.learning_rate]
+low = 0.01
+high = 3
+[algorithms.parameters.subsample]
+low = 0.5
+high = 1.0
+[algorithms.parameters.gamma]
+low = 0.001
+high = 10
+[algorithms.parameters.colsample_bytree]
+low = 0.6
+high = 1.0
+[[algorithms]]
 name = "SVR"
 
 [algorithms.parameters.C]
@@ -12,37 +33,11 @@ high = 1000000.0
 low = 0.0001
 high = 100.0
 [[algorithms]]
-name = "RandomForestRegressor"
-
-[algorithms.parameters]
-max_features = [ [ "a", "u", "t", "o",],]
-[algorithms.parameters.max_depth]
-low = 2
-high = 32
-[algorithms.parameters.n_estimators]
-low = 5
-high = 10
-[[algorithms]]
-name = "Ridge"
-
-[algorithms.parameters.alpha]
-low = 0.01
-high = 100
-[[algorithms]]
 name = "PLSRegression"
 
 [algorithms.parameters.n_components]
 low = 2
 high = 5
-[[algorithms]]
-name = "KNeighborsRegressor"
-
-[algorithms.parameters]
-weights = [ [ "u", "n", "i", "f", "o", "r", "m",],]
-metric = [ [ "m", "i", "n", "k", "o", "w", "s", "k", "i",],]
-[algorithms.parameters.n_neighbors]
-low = 1
-high = 10
 [[descriptors]]
 name = "ECFP"
 
@@ -70,28 +65,29 @@ maxPath = 3
 fpSize = 2048
 
 [data]
-training_dataset_file = "qsar/dataset/AID_585_test_str.csv"
+training_dataset_file = "qsar/dataset/data_rdkit_train.csv"
 input_column = "smiles"
 response_column = "activity"
 response_type = "regression"
-save_intermediate_files = false
+test_dataset_file = "qsar/dataset/data_rdkit_test.csv"
+save_intermediate_files = true
 log_transform = false
 probabilistic_threshold_representation = false
 assess_modelability = false
 
 [settings]
 mode = [ "r", "e", "g", "r", "e", "s", "s", "i", "o", "n",]
-shuffle = false
+shuffle = true
 direction = [ "m", "a", "x", "i", "m", "i", "z", "e",]
 scoring = "neg_mean_squared_error"
 minimise_std_dev = false
 use_cache = true
 n_trials = 100
-n_splits = 3
+n_splits = 5
 n_replicates = 5
 n_jobs = -1
 n_startup_trials = 50
-random_seed = 44
+random_seed = 42
 track_to_mlflow = false
 split_chemprop = true
 n_chemprop_trials = 1

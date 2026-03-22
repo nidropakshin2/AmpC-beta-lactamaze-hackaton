@@ -1,0 +1,14 @@
+run_type = "sampling"
+device = "cpu"  # set torch device e.g. "cpu"
+json_out_config = "reinvent/configs/sampling.json"  # write this TOML to JSON
+
+
+[parameters]
+
+model_file = "reinvent/checkpoints/agent.chkpt"
+
+output_file = 'reinvent/data/samples_10000.csv'  # sampled SMILES and NLL in CSV format
+
+num_smiles = 10000  # number of SMILES to be sampled, 1 per input SMILES
+unique_molecules = true  # if true remove all duplicatesd canonicalize smiles
+randomize_smiles = true # if true shuffle atoms in SMILES randomly

@@ -3,6 +3,7 @@ import pandas as pd
 from rdkit.Chem import MolStandardize
 from optunaz.utils.preprocessing.splitter import Stratified
 import os
+import argparse
 
 def standardize(smiles):
     mol = Chem.MolFromSmiles(smiles)
@@ -20,43 +21,40 @@ def standardize(smiles):
 def prepare_dataset(df):
 
     # 1. фильтрация
-    df = df.dropna(subset=["PUBCHEM_EXT_DATASOURCE_SMILES", "Log of AC50"])
-    df = df[df["Curve R2"] > 0.7]
-    df = df[df["Curve Class"].isin([1,2,3])]
+    df = df[["Smiles", "pIC50"]]
     
     # 2. стандартизация
-    df["smiles"] = df["PUBCHEM_EXT_DATASOURCE_SMILES"].apply(standardize)
+    df["smiles"] = df["Smiles"].apply(standardize)
     # df = df.dropna(subset=["smiles"])
     
     # 3. target
-    df["activity"] = df["Log of AC50"]
+    df["activity"] = df["pIC50"]
 
     return df
 
-src = "qsar"
+def process(src, dataset_file):
+    dataset_file = dataset_file.split(".")[0]
+    df = pd.read_csv(f"{src}/dataset/{dataset_file}.csv")
 
-df = pd.read_csv(f"{src}/dataset/AID_585_datatable_all.csv")
-df.drop(index=[0, 1, 2], inplace=True)
-df.drop(columns=["PUBCHEM_RESULT_TAG", "PUBCHEM_ACTIVITY_URL", "PUBCHEM_ASSAYDATA_COMMENT", "Curve Description"], inplace=True)
-df.reset_index(drop=True, inplace=True)
-
-df.to_csv(f"{src}/dataset/AID_585_datatable_all_cleaned.csv", index=False)
-df = pd.read_csv(f"{src}/dataset/AID_585_datatable_all_cleaned.csv")
-
-df = prepare_dataset(df)
-df.to_csv(f"{src}/dataset/AID_585_datatable_preprocessed.csv", index=False)
-df = pd.read_csv(f"{src}/dataset/AID_585_datatable_preprocessed.csv")
-
-df = pd.read_csv(f"{src}/dataset/AID_585_datatable_preprocessed.csv")
-primarydf = df[["smiles", "activity"]]
-primarydf.to_csv(f"{src}/dataset/AID_585_datatable_smiles_activity.csv", index=False)
-primarydf = pd.read_csv(f"{src}/dataset/AID_585_datatable_smiles_activity.csv")
+    df = prepare_dataset(df)
+    df.to_csv(f"{src}/dataset/{dataset_file}_preprocessed.csv", index=False)
+    df = pd.read_csv(f"{src}/dataset/{dataset_file}_preprocessed.csv")
 
 
-train_str, test_str = Stratified(fraction=0.2, seed=42, bins="fd").split(primarydf["smiles"], primarydf["activity"])
+    train_str, test_str = Stratified(fraction=0.2, seed=42, bins="fd").split(df["smiles"], df["activity"])
 
-print("Train (stratified):", len(train_str))
-print("Test (stratified):", len(test_str))
+    df.loc[train_str].to_csv(f"{src}/dataset/{dataset_file}_train.csv", index=False)
+    df.loc[test_str].to_csv(f"{src}/dataset/{dataset_file}_test.csv", index=False)
 
-primarydf.loc[train_str].to_csv(f"{src}/dataset/AID_585_train_str.csv", index=False)
-primarydf.loc[test_str].to_csv(f"{src}/dataset/AID_585_test_str.csv", index=False)
+    print(f"Train: {len(train_str)}", f"Test: {len(test_str)}")
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--src', default='qsar', help='source directory (default: qsar)')
+    parser.add_argument('--dataset_file', required=True, help='dataset file (CSV)')
+    
+    args = parser.parse_args()
+    
+    process(args.src, args.dataset_file)

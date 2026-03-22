@@ -1,0 +1,192 @@
+# ============================================================
+# REINVENT 4 — Reinforcement Learning Configuration
+# Components:
+#   1. QED          >= 0.6
+#   2. SA Score     <= 4.0
+#   3. LogP         2.0 – 5.0
+#   4. Tanimoto     dissimilarity from reference set
+#   5. Brenk        structural alert filter
+# ============================================================
+
+
+run_type             = "staged_learning"
+device               = "cpu"           # "cpu" if no GPU
+tb_logdir            = "reinvent/logs/tb"
+json_out_config      = "reinvent/configs/config.json"
+
+[parameters]
+
+prior_file = 'c:\Users\Mikhail\miniconda3\envs\sber_hack\Lib\site-packages\reinvent\..\priors\reinvent.prior'
+agent_file = 'c:\Users\Mikhail\miniconda3\envs\sber_hack\Lib\site-packages\reinvent\..\priors\reinvent.prior'
+summary_csv_prefix = "reinvent/data/agent"
+
+batch_size = 100
+use_checkpoint = true
+
+[learning_strategy]
+
+type = "dap"
+sigma = 80          
+rate  = 0.0003 
+
+# ── Diversity filter ─────────────────────────────────────────
+[diversity_filter]
+type                 = "IdenticalMurckoScaffold"
+bucket_size          = 25
+minscore             = 0.4
+minsimilarity        = 0.4
+
+# ── Inception ────────────────────────────────────────────────
+#[inception]
+#smiles               = ""
+#memory_size          = 100
+#sample_size          = 10
+
+# ============================================================
+# SCORING FUNCTION
+# geometric_mean: любой слабый компонент тянет итог вниз
+# ============================================================
+[[stage]]
+
+max_score = 1.0
+max_steps = 1000
+
+chkpt_file = 'reinvent/checkpoints/agent.chkpt'
+
+
+[stage.scoring]
+type = "geometric_mean"
+
+# ── Component 1: QED ─────────────────────────────────────────
+# Quantitative Estimate of Drug-likeness (0 → 1)
+# Цель: QED >= 0.6, идеал >= 0.8
+[[stage.scoring.component]]
+[stage.scoring.component.QED]
+[[stage.scoring.component.QED.endpoint]]
+name = "qed"
+
+weight = 0.3
+
+transform.type = "sigmoid"
+transform.low  = 0.6        # начало награды
+transform.high = 0.9        # насыщение
+transform.k    = 0.5
+
+# ── Component 2: SA Score ─────────────────────────────────────
+# Synthetic Accessibility (1 = легко, 10 = сложно)
+# Цель: SA <= 4.0 — наказываем трудносинтезируемые молекулы
+[[stage.scoring.component]]
+[stage.scoring.component.SAScore]
+[[stage.scoring.component.SAScore.endpoint]]
+name = "SA_score"
+
+weight = 0.3
+
+transform.type = "reverse_sigmoid"
+transform.low  = 1.0        # легкосинтезируемые — высокий score
+transform.high = 4.0        # SA > 4 начинает штрафоваться
+transform.k    = 0.5
+
+# ── Component 3: LogP ─────────────────────────────────────────
+# Lipophilicity (Wildman-Crippen)
+# Цель: 2.0 – 5.0  (оптимальное окно для пероральных препаратов)
+# double_sigmoid создаёт "колокол" — штрафует выход за границы
+
+
+# ── Component 4: Tanimoto Dissimilarity ───────────────────────
+# REINVENT нативно считает Tanimoto SIMILARITY к референсным молекулам.
+# Чтобы получить DISSIMILARITY, инвертируем через reverse_sigmoid:
+#   dissimilarity_score = 1 - tanimoto_similarity
+# Цель: генерировать новые скаффолды, непохожие на reference set.
+#
+# ВАЖНО: замени smiles ниже на свои референсные молекулы.
+# Можно указать несколько — берётся максимальное сходство по списку.
+
+[[stage.scoring.component]]
+[stage.scoring.component.TanimotoDistance]
+[[stage.scoring.component.TanimotoDistance.endpoint]]
+name = "tanimoto_dissimilarity"
+
+weight = 0.3
+
+params.smiles = [
+    "COc1cccc(Nc2c(C(N)=O)cnc3c(C)cc(S(=O)(=O)c4cccc(C(=O)N(C)C)c4)cc23)c1",
+    "COc1ccc(-c2nc(C(=O)NCc3coc4ccccc34)c([C@@H](C)N)o2)c2ccc(C(F)(F)F)nc12",
+    "COc1cccc(Nc2c(C(N)=O)cnc3ccc(S(=O)(=O)c4cccc(C(=O)N(C)C)c4)cc23)c1",
+    "Cc1cc(C(=O)N[C@H]2CC[C@@H](NC(=O)c3cc(F)cnc3Oc3cccc(-c4ccc(O)cc4CN4CCCOCC4)c3)CC2)nn1C",
+    "Cn1nc(C(=O)NC2CCC(NC(=O)c3cc(F)cnc3Oc3cccc(-c4ccc(CCCN5CCNCC5)cc4)c3)CC2)cc1C(F)(F)F",
+  ]
+
+  # Morgan fingerprint (radius=2, 2048 бит)
+params.radius     = 2
+params.use_counts = true
+params.use_features = false
+
+transform.type = "reverse_sigmoid"
+transform.low  = 0.2   # было 0.1
+transform.high = 0.5   # similarity > 0.4 → score ~0.0 (слишком похожа)
+transform.k    = 0.5
+
+# ── Component 5: Brenk Filter ─────────────────────────────────
+# Структурные алерты Brenk et al. (2008) — 105 нежелательных субструктур.
+# Реактивные группы, токсикофоры, pan-assay interference (PAINS).
+# Молекула, попадающая под ЛЮБОЙ алерт → score = 0.
+[[stage.scoring.component]]
+[stage.scoring.component.custom_alerts]
+[[stage.scoring.component.custom_alerts.endpoint]]
+name   = "brenk_filter"
+
+weight = 0.7
+
+params.smarts = [
+    # ── Реактивные группы ────────────────────────────────────
+    "[#6;r3]1~[#6;r3]~[#6;r3]1",               # эпоксид / азиридин
+    "[#6](=O)[F,Cl,Br,I]",                      # ацилгалид
+    "[CH1](=O)",                                 # альдегид
+    "[S;X2](=O)",                               # сульфоксид нестаб.
+    "[C,c]-S(=O)(=O)-[Cl]",                     # сульфонилхлорид
+    "[$(N-!@[O;!$(O=*)])]",                     # гидроксиламин
+    "N=!@N",                                     # азометин нестаб.
+    "[N;!$(N-C=O)]~[N;!$(N-C=O)]",             # гидразин
+    "C(=O)OC(=O)",                              # ангидрид
+    "C=CC(=O)",                                  # Михаэль акцептор
+    "O=CN=[N+]=[N-]",                           # изоцианат
+    "[#7;!$(N-C=O);!$(N-S=O)]-[Cl,Br,I]",     # N-галогенид
+    # ── Токсикофоры ──────────────────────────────────────────
+    "c1ccc2c(c1)ccc3cccc4cccc2c34",             # ПАУ (полиц. ароматика)
+    "c1ccc2[nH]ccc2c1",                         # β-карболин
+    "[OH]c1ccc(cc1)[NH2]",                      # 4-аминофенол
+    "c1ccc(cc1)N",                              # анилин незамещённый
+    "[N+](=O)[O-]",                             # нитро-группа
+    "C(=O)N(C=O)",                              # имид
+    "[SH]",                                     # тиол свободный
+    # ── PAINS / pan-assay interference ───────────────────────
+    "c1ccc(cc1)C=NNc2ccccc2",                   # гидразон ароматич.
+    "O=C1C=CC(=O)c2ccccc21",                    # ортохинон
+    "C1=CC(=O)C=CC1=O",                         # пара-хинон
+    "c1ccc(cc1)-c2ccc(cc2)O",                  # бифенол
+    "Oc1ccc(cc1)-c2cccc(c2)O",                 # резорцин арил
+    "[#6]~[#7]~[#7]~[#6]",                     # азо-группа
+    # ── Нежелательные физхим. свойства ───────────────────────
+    "[#6;r8,r9,r10,r11,r12,r13,r14]",          # макроциклы (>7 атомов)
+    "[F,Cl,Br,I]-[F,Cl,Br,I]",                 # дигалогениды геминал.
+    "[$(C#N),$(N#C)]",                          # изонитрил
+    "C(=O)Cl",                                  # хлорангидрид
+    "[P;!$(P(=O))]",                            # фосфин трёхвалентный
+    "[Se]",                                     # селен
+    "[Te]",                                     # теллур
+]
+
+
+[[stage.scoring.component]]
+[stage.scoring.component.Qptuna]
+[[stage.scoring.component.Qptuna.endpoint]]
+name = "Qptuna"
+weight = 2
+
+params.model_file = "qsar/model/latest.pkl"
+
+transform.type = "sigmoid"
+transform.high = 9
+transform.low = 3
+transform.k = 1
