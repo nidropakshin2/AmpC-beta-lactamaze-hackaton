@@ -2,6 +2,7 @@ import apischema
 import time
 import toml
 import pandas as pd
+import pandas as pd
 # Start with the imports.
 import sklearn
 from optunaz.three_step_opt_build_merge import (
@@ -18,11 +19,13 @@ from optunaz.config.optconfig import (
     RandomForestRegressor,
     Ridge,
     XGBRegressor,
+    XGBRegressor,
     PLSRegression,
     KNeighborsRegressor
 )
 from optunaz.datareader import Dataset
 from optunaz.utils.preprocessing.deduplicator import KeepAllNoDeduplication
+from optunaz.utils.preprocessing.splitter import Stratified, NoSplitting
 from optunaz.utils.preprocessing.splitter import Stratified, NoSplitting
 from optunaz.descriptors import ECFP, MACCS_keys, ECFP_counts, PathFP
 
@@ -71,8 +74,6 @@ def build_QSAR(src, dataset_train_file, dataset_test_file):
         ],
         algorithms=[
             XGBRegressor.new(n_estimators={"low": 3, "high": 6}),
-            SVR.new(),
-            PLSRegression.new(),
         ],
         settings=OptimizationConfig.Settings(
             mode=ModelMode.REGRESSION,
@@ -80,6 +81,7 @@ def build_QSAR(src, dataset_train_file, dataset_test_file):
             n_splits=5,  # Number of splits for cross-validation.
             n_trials=100,  # Total number of trials.
             n_startup_trials=50,  # Number of startup ("random") trials.
+            random_seed=42, # Seed for reproducability
             random_seed=42, # Seed for reproducability
             direction=OptimizationDirection.MAXIMIZATION,
             shuffle=True,  # Shuffle data before splitting
